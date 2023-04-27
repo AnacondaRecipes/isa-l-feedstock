@@ -18,12 +18,6 @@ build:
   skip: true  # [not (x86_64)]
 
 requirements:
-  host:
-    - pip
-    - python
-    - setuptools
-    - wheel
-  
   build:
     - {{ compiler('c') }}
     - nasm  # [not osx]
@@ -33,20 +27,22 @@ requirements:
     - automake  # [unix]
     - libtool   # [unix]
     - make      # [unix]
+    - patch     # [unix]
+    - m2-patch  # [win]
+
+  host:
 
 test:
   files:
     - LICENSE
   commands:
     - igzip --help  # [unix]
-        # Test compression and decompression. 
     - igzip -k LICENSE  # [unix]
-        # Original file should be larger than compressed file.
     - bash -c '[ $(stat -c %s LICENSE) -gt $(stat -c %s LICENSE.gz) ]'  # [unix]
     - bash -c '[ "$(igzip -cd LICENSE.gz)" == "$(cat LICENSE)" ]'  # [unix]
 
 about:
-  home: https://software.intel.com/content/www/us/en/develop/tools/isa-l.html
+  home:  https://www.intel.com/content/www/us/en/developer/tools/isa-l/overview.html
   summary: provides tools to minimize disk space use and maximize storage throughput, security, and resilience.
   license_family: BSD
   license: BSD-3-Clause
