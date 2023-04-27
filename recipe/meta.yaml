@@ -14,15 +14,14 @@ source:
     - nasm-filter.patch
 
 build:
-  number: 4
-
+  number: 0
+  skip: true  # [not (x86_64)]
 
 requirements:
+  host:
+  
   build:
-    # igzip needs to be compiled with 7.5.0 to prevent an issue:
-    # https://github.com/conda-forge/isa-l-feedstock/issues/7
-    - {{ compiler('c') }}  # [not linux]
-    - gcc_linux-64 ==7.5.0  # [linux]
+    - {{ compiler('c') }}
     - nasm  # [not osx]
     # Osx needs some flags that are available from 2.14 on
     - nasm >=2.14  # [osx]
@@ -30,23 +29,28 @@ requirements:
     - automake  # [unix]
     - libtool   # [unix]
     - make      # [unix]
+    - patch     # [unix]
+    - m2-patch  # [win]
+  
 
 test:
   files:
     - LICENSE
+    - igzip.exe
   commands:
     - igzip --help  # [unix]
-        # Test compression and decompression. 
     - igzip -k LICENSE  # [unix]
-        # Original file should be larger than compressed file.
+    - dir # [win]
+    - igzip.exe --help  # [win]
+    - igzip.exe -k LICENSE  # [win]
     - bash -c '[ $(stat -c %s LICENSE) -gt $(stat -c %s LICENSE.gz) ]'  # [unix]
     - bash -c '[ "$(igzip -cd LICENSE.gz)" == "$(cat LICENSE)" ]'  # [unix]
 
 about:
-  home: https://software.intel.com/content/www/us/en/develop/tools/isa-l.html
-  license: BSD-3-Clause
+  home: https://www.intel.com/content/www/us/en/develop/tools/isa-l.html
   summary: provides tools to minimize disk space use and maximize storage throughput, security, and resilience.
   license_family: BSD
+  license: BSD-3-Clause
   license_file: LICENSE
 
   description: |
