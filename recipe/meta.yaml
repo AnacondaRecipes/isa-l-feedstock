@@ -36,9 +36,13 @@ requirements:
 test:
   files:
     - LICENSE
+    - igzip.exe
   commands:
     - igzip --help  # [unix]
     - igzip -k LICENSE  # [unix]
+    - dir # [win]
+    - igzip.exe --help  # [win]
+    - igzip.exe -k LICENSE  # [win]
     - bash -c '[ $(stat -c %s LICENSE) -gt $(stat -c %s LICENSE.gz) ]'  # [unix]
     - bash -c '[ "$(igzip -cd LICENSE.gz)" == "$(cat LICENSE)" ]'  # [unix]
 
