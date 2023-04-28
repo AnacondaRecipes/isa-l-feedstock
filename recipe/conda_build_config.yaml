@@ -1,0 +1,4 @@
+# igzip needs to be compiled with 7.5.0 to prevent an issue:
+# https://github.com/conda-forge/isa-l-feedstock/issues/7
+c_compiler_version:     # [linux64]
+  - 7.5.0               # [linux64]
